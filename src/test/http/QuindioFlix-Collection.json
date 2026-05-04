@@ -1,0 +1,173 @@
+{
+  "info": {
+    "name": "QuindioFlix API Tests",
+    "description": "Colección de pruebas para la API de QuindioFlix",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Login - Exitoso",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
+        },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "email", "value": "juan.torres@email.com" },
+            { "key": "password", "value": "any" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Login - Inválido",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}],
+          "path": ["api", "auth", "login"]
+        },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "email", "value": "invalid@email.com" },
+            { "key": "password", "value": "wrong" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar Usuarios",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/usuarios",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "usuarios"]
+        }
+      }
+    },
+    {
+      "name": "Obtener Usuario por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/usuarios/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "usuarios", "1"]
+        }
+      }
+    },
+    {
+      "name": "Crear Usuario",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/usuarios",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "usuarios"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"Usuario Test\",\n    \"email\": \"test@newemail.com\",\n    \"telefono\": \"3001234567\",\n    \"fechaNacimiento\": \"1995-05-15\",\n    \"ciudad\": \"Armenia\",\n    \"idPlan\": 1\n}",
+          "options": {
+            "raw": { "language": "json" }
+          }
+        }
+      }
+    },
+    {
+      "name": "Listar Contenido",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/contenido",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contenido"]
+        }
+      }
+    },
+    {
+      "name": "Obtener Contenido por ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/contenido/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contenido", "1"]
+        }
+      }
+    },
+    {
+      "name": "Contenido por Categoría",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/contenido/categoria/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contenido", "categoria", "1"]
+        }
+      }
+    },
+    {
+      "name": "Buscar Contenido",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/contenido/buscar?q=amor",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contenido", "buscar"],
+          "query": [
+            { "key": "q", "value": "amor" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear Contenido",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/contenido",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contenido"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"titulo\": \"Nueva Pelicula Test\",\n    \"anioLanzamiento\": 2025,\n    \"duracionMin\": 120,\n    \"sinopsis\": \"Pelicula de prueba\",\n    \"clasificacionEdad\": \"+13\",\n    \"fechaCatalogo\": \"2025-01-01\",\n    \"esOriginal\": \"N\",\n    \"idCategoria\": 1,\n    \"idEmpleadoResponsable\": 1\n}",
+          "options": {
+            "raw": { "language": "json" }
+          }
+        }
+      }
+    }
+  ]
+}

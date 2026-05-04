@@ -1,0 +1,267 @@
+# QuindioFlix - API Tests
+# Ejecutar desde IntelliJ IDEA o VS Code (REST Client)
+
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### ========================================
+### HEALTH CHECK
+### ========================================
+
+GET {{baseUrl}}/api/health
+
+> {%
+    client.test("Health check", function() {
+        client.assert(response.status === 200, "Expected 200");
+        client.assert(response.body.success === true, "Expected success");
+    });
+%}
+
+### ========================================
+### AUTENTICACIÓN
+### ========================================
+
+# Login exitoso (después de ejecutar DML)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+email=juan.torres@email.com&password=any
+
+> {%
+    client.test("Login exitoso", function() {
+        client.assert(response.status === 200, "Expected 200");
+        client.assert(response.body.success === true, "Expected success");
+        client.assert(response.body.data.token !== null, "Expected token");
+    });
+    client.global.set("token", response.body.data.token);
+%}
+
+# Login con credenciales inválidas
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+email=invalid@email.com&password=wrong
+
+> {%
+    client.test("Login inválido", function() {
+        client.assert(response.status === 401, "Expected 401");
+    });
+%}
+
+### ========================================
+### USUARIOS
+### ========================================
+
+# Listar usuarios
+GET {{baseUrl}}/api/usuarios
+
+> {%
+    client.test("Listar usuarios", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Obtener usuario por ID
+GET {{baseUrl}}/api/usuarios/1
+
+> {%
+    client.test("Obtener usuario", function() {
+        client.assert(response.status === 200, "Expected 200");
+        client.assert(response.body.data.id === 1, "Expected id 1");
+    });
+%}
+
+# Crear usuario
+POST {{baseUrl}}/api/usuarios
+Content-Type: {{contentType}}
+
+{
+    "nombre": "Nuevo Usuario Test",
+    "email": "test@newemail.com",
+    "telefono": "3001234567",
+    "fechaNacimiento": "1995-05-15",
+    "ciudad": "Armenia",
+    "idPlan": 1,
+    "estadoCuenta": "PENDIENTE"
+}
+
+> {%
+    client.test("Crear usuario", function() {
+        client.assert(response.status === 201, "Expected 201");
+    });
+%}
+
+# Actualizar usuario
+PUT {{baseUrl}}/api/usuarios/1
+Content-Type: {{contentType}}
+
+{
+    "nombre": "Juan Pablo Actualizado",
+    "email": "juan.torres@email.com",
+    "telefono": "3101234567",
+    "fechaNacimiento": "1985-03-15",
+    "ciudad": "Armenia",
+    "idPlan": 1,
+    "estadoCuenta": "ACTIVO"
+}
+
+> {%
+    client.test("Actualizar usuario", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+### ========================================
+### CONTENIDO
+### ========================================
+
+# Listar todo el contenido
+GET {{baseUrl}}/api/contenido
+
+> {%
+    client.test("Listar contenido", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Obtener contenido por ID
+GET {{baseUrl}}/api/contenido/1
+
+> {%
+    client.test("Obtener contenido", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Buscar contenido por categoría
+GET {{baseUrl}}/api/contenido/categoria/1
+
+> {%
+    client.test("Contenido por categoría", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Buscar contenido
+GET {{baseUrl}}/api/contenido/buscar?q=amor
+
+> {%
+    client.test("Buscar contenido", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Crear contenido
+POST {{baseUrl}}/api/contenido
+Content-Type: {{contentType}}
+
+{
+    "titulo": "Nueva Pelicula Test",
+    "anioLanzamiento": 2025,
+    "duracionMin": 120,
+    "sinopsis": "Pelicula de prueba",
+    "clasificacionEdad": "+13",
+    "fechaCatalogo": "2025-01-01",
+    "esOriginal": "N",
+    "idCategoria": 1,
+    "idEmpleadoResponsable": 1,
+    "popularidad": 0
+}
+
+> {%
+    client.test("Crear contenido", function() {
+        client.assert(response.status === 201, "Expected 201");
+    });
+%}
+
+### ========================================
+### PERFILES (requiere autenticación)
+### ========================================
+
+# Listar perfiles de un usuario
+GET {{baseUrl}}/api/usuarios/1/perfiles
+Authorization: Bearer {{token}}
+
+> {%
+    client.test("Listar perfiles", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Crear perfil
+POST {{baseUrl}}/api/usuarios/1/perfiles
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+    "idUsuario": 1,
+    "nombre": "Nuevo Perfil",
+    "tipo": "ADULTO"
+}
+
+> {%
+    client.test("Crear perfil", function() {
+        client.assert(response.status === 201, "Expected 201");
+    });
+%}
+
+### ========================================
+### REPRODUCCIONES (requiere autenticación)
+### ========================================
+
+# Historial de reproducciones de un perfil
+GET {{baseUrl}}/api/perfiles/1/historial
+Authorization: Bearer {{token}}
+
+> {%
+    client.test("Historial reproducciones", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Registrar reproducción
+POST {{baseUrl}}/api/reproducciones
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+    "idPerfil": 1,
+    "idContenido": 1,
+    "fechaHoraInicio": "2025-01-10T14:00:00",
+    "fechaHoraFin": "2025-01-10T15:30:00",
+    "dispositivo": "COMPUTADOR",
+    "porcentajeAvance": 100
+}
+
+> {%
+    client.test("Registrar reproducción", function() {
+        client.assert(response.status === 201, "Expected 201");
+    });
+%}
+
+### ========================================
+### PRUEBAS DE SEGURIDAD (SIN AUTH)
+### ========================================
+
+# Intentar acceder a endpoint protegido sin token
+GET {{baseUrl}}/api/usuarios
+
+> {%
+    client.test("Sin auth debe permitir GET público", function() {
+        client.assert(response.status === 200, "Expected 200");
+    });
+%}
+
+# Intentar crear contenido sin permisos de ADMIN
+POST {{baseUrl}}/api/contenido
+Content-Type: {{contentType}}
+
+{
+    "titulo": "Test sin permisos"
+}
+
+> {%
+    client.test("Sin permisos debe rechazar", function() {
+        client.assert(response.status === 403, "Expected 403");
+    });
+%}
