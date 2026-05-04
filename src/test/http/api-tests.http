@@ -1,5 +1,4 @@
 # QuindioFlix - API Tests
-# Ejecutar desde IntelliJ IDEA o VS Code (REST Client)
 
 @baseUrl = http://localhost:8080
 @contentType = application/json
@@ -33,10 +32,10 @@ email=juan.torres@email.com&password=any
         client.assert(response.body.success === true, "Expected success");
         client.assert(response.body.data.token !== null, "Expected token");
     });
-    client.global.set("token", response.body.data.token);
+    @token = response.body.data.token;
 %}
 
-# Login con credenciales inválidas
+### Login con credenciales inválidas
 POST {{baseUrl}}/api/auth/login
 Content-Type: application/x-www-form-urlencoded
 
@@ -61,7 +60,7 @@ GET {{baseUrl}}/api/usuarios
     });
 %}
 
-# Obtener usuario por ID
+### Obtener usuario por ID
 GET {{baseUrl}}/api/usuarios/1
 
 > {%
@@ -71,7 +70,7 @@ GET {{baseUrl}}/api/usuarios/1
     });
 %}
 
-# Crear usuario
+### Crear usuario
 POST {{baseUrl}}/api/usuarios
 Content-Type: {{contentType}}
 
@@ -91,7 +90,7 @@ Content-Type: {{contentType}}
     });
 %}
 
-# Actualizar usuario
+### Actualizar usuario
 PUT {{baseUrl}}/api/usuarios/1
 Content-Type: {{contentType}}
 
@@ -124,7 +123,7 @@ GET {{baseUrl}}/api/contenido
     });
 %}
 
-# Obtener contenido por ID
+### Obtener contenido por ID
 GET {{baseUrl}}/api/contenido/1
 
 > {%
@@ -133,7 +132,7 @@ GET {{baseUrl}}/api/contenido/1
     });
 %}
 
-# Buscar contenido por categoría
+### Buscar contenido por categoría
 GET {{baseUrl}}/api/contenido/categoria/1
 
 > {%
