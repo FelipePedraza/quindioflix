@@ -1,7 +1,6 @@
 -- =============================================================================
 -- QUINDIOFLIX - Consultas Avanzadas
--- Universidad del Quindío · Bases de Datos II · 2025-1
--- Sprint 3: Núcleo Temático 1 - Consultas Avanzadas
+-- Universidad del Quindío · Bases de Datos II
 -- =============================================================================
 
 SET LINESIZE 200;

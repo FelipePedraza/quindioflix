@@ -1,7 +1,6 @@
 -- =============================================================================
 -- QUINDIOFLIX - PL/SQL: Excepciones y Disparadores
--- Universidad del Quindío · Bases de Datos II · 2025-1
--- Sprint 5: Núcleo Temático 2 - Parte 2
+-- Universidad del Quindío · Bases de Datos II 
 -- =============================================================================
 
 SET SERVEROUTPUT ON SIZE UNLIMITED;

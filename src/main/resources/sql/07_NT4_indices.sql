@@ -1,7 +1,6 @@
 -- =============================================================================
 -- QUINDIOFLIX - Indices y Analisis de Rendimiento
--- Universidad del Quindío · Bases de Datos II · 2025-1
--- Sprint 7: Nucleo Tematico 4
+-- Universidad del Quindío · Bases de Datos II
 -- =============================================================================
 
 SET LINESIZE 200;

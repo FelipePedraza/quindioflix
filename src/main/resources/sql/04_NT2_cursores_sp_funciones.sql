@@ -1,7 +1,6 @@
 -- =============================================================================
 -- QUINDIOFLIX - PL/SQL: Cursores, Procedimientos y Funciones
--- Universidad del Quindío · Bases de Datos II · 2025-1
--- Sprint 4: Núcleo Temático 2 - Parte 1
+-- Universidad del Quindío · Bases de Datos II
 -- =============================================================================
 
 SET SERVEROUTPUT ON SIZE UNLIMITED;

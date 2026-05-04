@@ -1,7 +1,6 @@
 -- =============================================================================
 -- QUINDIOFLIX - Transacciones y Concurrencia
--- Universidad del Quindío · Bases de Datos II · 2025-1
--- Sprint 6: Núcleo Temático 3
+-- Universidad del Quindío · Bases de Datos II
 -- =============================================================================
 
 SET SERVEROUTPUT ON SIZE UNLIMITED;
