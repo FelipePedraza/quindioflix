@@ -33,7 +33,7 @@ CREATE TABLE USUARIOS (
     fecha_nacimiento DATE NOT NULL,
     ciudad VARCHAR2(50) NOT NULL,
     fecha_registro DATE NOT NULL,
-    estado_cuenta VARCHAR2(20) NOT NULL DEFAULT 'ACTIVO',
+    estado_cuenta VARCHAR2(20) NOT NULL,
     id_plan NUMBER(10) NOT NULL,
     id_referidor NUMBER(10),
     CONSTRAINT fk_usuario_plan FOREIGN KEY (id_plan) REFERENCES PLANES(id_plan),
@@ -59,7 +59,7 @@ CREATE TABLE PERFILES (
     id_usuario NUMBER(10) NOT NULL,
     nombre VARCHAR2(50) NOT NULL,
     avatar BLOB,
-    tipo VARCHAR2(20) NOT NULL DEFAULT 'ADULTO',
+    tipo VARCHAR2(20) NOT NULL,
     CONSTRAINT fk_perfil_usuario FOREIGN KEY (id_usuario) REFERENCES USUARIOS(id_usuario) ON DELETE CASCADE,
     CONSTRAINT chk_perfil_tipo CHECK (tipo IN ('ADULTO', 'INFANTIL'))
 );
@@ -105,12 +105,11 @@ CREATE TABLE CONTENIDO (
     sinopsis CLOB,
     clasificacion_edad VARCHAR2(10) NOT NULL,
     fecha_catalogo DATE NOT NULL,
-    es_original CHAR(1) DEFAULT 'N',
+    es_original CHAR(1),
     id_categoria NUMBER(10) NOT NULL,
     id_empleado_responsable NUMBER(10),
-    popularidad NUMBER(5) DEFAULT 0,
-    CONSTRAINT fk_contenido_categoria FOREIGN KEY (id_categoria) REFERENCES CATEGORIAS(id_category),
-    CONSTRAINT fk_contenido_empleado FOREIGN KEY (id_empleado_responsable) REFERENCES EMPLEADOS(id_empleado),
+    popularidad NUMBER(5),
+    CONSTRAINT fk_contenido_categoria FOREIGN KEY (id_categoria) REFERENCES CATEGORIAS(id_categoria),
     CONSTRAINT chk_clasificacion CHECK (clasificacion_edad IN ('TP', '+7', '+13', '+16', '+18')),
     CONSTRAINT chk_es_original CHECK (es_original IN ('S', 'N'))
 );
@@ -194,12 +193,11 @@ COMMENT ON COLUMN EPISODIOS.duracion_min IS 'Duración en minutos';
 -- DOMINIO: EMPLEADOS
 -- =============================================================================
 
--- Tabla DEPARTAMENTOS
+-- Tabla DEPARTAMENTOS (sin FK, se agregara despues)
 CREATE TABLE DEPARTAMENTOS (
     id_departamento NUMBER(10) PRIMARY KEY,
     nombre VARCHAR2(50) NOT NULL UNIQUE,
-    id_jefe NUMBER(10),
-    CONSTRAINT fk_departamento_jefe FOREIGN KEY (id_jefe) REFERENCES EMPLEADOS(id_empleado)
+    id_jefe NUMBER(10)
 );
 
 COMMENT ON TABLE DEPARTAMENTOS IS 'Departamentos de la empresa';
@@ -249,7 +247,7 @@ CREATE TABLE REPRODUCCIONES (
     fecha_hora_inicio DATE NOT NULL,
     fecha_hora_fin DATE,
     dispositivo VARCHAR2(20) NOT NULL,
-    porcentaje_avance NUMBER(5, 2) DEFAULT 0,
+    porcentaje_avance NUMBER(5, 2),
     CONSTRAINT fk_reproduccion_perfil FOREIGN KEY (id_perfil) REFERENCES PERFILES(id_perfil) ON DELETE CASCADE,
     CONSTRAINT fk_reproduccion_contenido FOREIGN KEY (id_contenido) REFERENCES CONTENIDO(id_contenido) ON DELETE CASCADE,
     CONSTRAINT fk_reproduccion_episodio FOREIGN KEY (id_episodio) REFERENCES EPISODIOS(id_episodio),
@@ -342,7 +340,7 @@ CREATE TABLE REPORTES_CONTENIDO (
     id_contenido NUMBER(10) NOT NULL,
     descripcion CLOB NOT NULL,
     fecha_reporte DATE NOT NULL,
-    estado VARCHAR2(20) NOT NULL DEFAULT 'PENDIENTE',
+    estado VARCHAR2(20) NOT NULL,
     id_moderador NUMBER(10),
     fecha_resolucion DATE,
     CONSTRAINT fk_reporte_perfil FOREIGN KEY (id_perfil) REFERENCES PERFILES(id_perfil) ON DELETE CASCADE,
